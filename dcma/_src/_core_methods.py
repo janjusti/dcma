@@ -57,6 +57,7 @@ class CoreMethods:
         # create dfs
         df_mut_results = DataFrame(columns=['ColNum', 'PossibleCodons', 'PossibleMuts', 'PossiblePols', 'MutScore'])
         df_alert_results = DataFrame(columns=['SeqName', 'ColNum', 'AlertType'])
+        #df_aminos = read_csv(PurePath(__file__).parent.parent / 'data' / 'aminos.csv')
         df_codons = read_csv(PurePath(__file__).parent.parent / 'data' / 'codons.csv')
         df_pols = read_csv(PurePath(__file__).parent.parent / 'data' / 'pols.csv')
         # execute deep searcher on each column from .fasta target file

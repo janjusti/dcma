@@ -1,2 +1,3 @@
+include dcma/data/aminos.csv
 include dcma/data/codons.csv
 include dcma/data/pols.csv

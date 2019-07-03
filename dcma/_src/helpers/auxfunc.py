@@ -117,7 +117,8 @@ class AuxFuncPack:
         # case 2: missense mutation (Mis) -> amino change between diff codons
         # case 3: nonsense mutation (Non) -> stop codons between diff codons
         muts_dict = {}
-        # (!) still todo
+        print(df_codons)
+        print(codons_dict)
 
         return muts_dict
 
