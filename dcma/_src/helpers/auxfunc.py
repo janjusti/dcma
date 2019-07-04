@@ -1,6 +1,7 @@
 from pathlib import Path
 from Bio.SeqIO import FastaIO
 from anytree import AnyNode, LevelOrderGroupIter
+from itertools import compress
 import string
 import logging
 
@@ -107,19 +108,81 @@ class AuxFuncPack:
                 num_of_deepables = sum([len(set(codon).difference(set(['A', 'C', 'T', 'G']))) for codon in level])
                 deepables_perc_on_lvl = (num_of_deepables/len(level))
                 deepness_perc = deepness_perc * deepables_perc_on_lvl
-            codons_dict[target_codon] = round(100*total_perc,3)
+            codons_dict[target_codon] = round(total_perc, 3)
 
         return codons_dict
 
-    def get_mutations_perc_dict(self, codons_dict, df_codons):
+    def get_mutations_perc_dict(self, aminos_dict, codons_dict, df_codons):
         ### detect mutation types between codons
-        # case 1: silent mutation (Sil) -> no amino change between diff codons
-        # case 2: missense mutation (Mis) -> amino change between diff codons
-        # case 3: nonsense mutation (Non) -> stop codons between diff codons
         muts_dict = {}
-        print(df_codons)
-        print(codons_dict)
+        # case 1: silent mutation (Sil) -> no amino change between diff codons
+        muts_dict = self.add_sil_perc_to_dict(aminos_dict, codons_dict, df_codons, muts_dict)
+        # case 2: missense mutation (Mis) -> amino change between diff codons
+        muts_dict = self.add_mis_perc_to_dict(aminos_dict, df_codons, muts_dict)
+        # case 3: nonsense mutation (Non) -> stop codons between diff codons
+        muts_dict = self.add_non_perc_to_dict(aminos_dict, muts_dict)
+        
+        return muts_dict
 
+    def add_sil_perc_to_dict(self, aminos_dict, codons_dict, df_codons, muts_dict):
+        # best-case (lim 0): only one different codon 
+        # worst-case (1): all possible codons for the same amino, in equal proportions
+        local_sil_dict = {}
+        for amino_name, amino_perc in aminos_dict.items():
+            codons_mask = [
+                df_codons.loc[df_codons['Codon'] == codon].Amino.iat[0] == amino_name
+                for codon in codons_dict
+            ]
+            num_existent_codons = sum(codons_mask)
+            if num_existent_codons is 1:
+                local_sil_dict[amino_name] = 0
+                continue
+            num_possible_codons = df_codons.loc[df_codons['Amino'] == amino_name].shape[0]
+            codon_diversity_perc = num_existent_codons/num_possible_codons
+            wc_perc = 1/num_possible_codons
+            dists_real_wc = list(compress([
+                abs((codon_perc/amino_perc)-wc_perc)
+                for codon_name, codon_perc in codons_dict.items()
+            ], codons_mask))
+            dists_sum = sum(dists_real_wc)
+            local_sil_dict[amino_name] = codon_diversity_perc*(1/(dists_sum+1))
+        sil_perc = sum([
+            local_sil_perc*aminos_dict[local_sil_name]
+            for local_sil_name, local_sil_perc in local_sil_dict.items()
+        ])
+        if sil_perc > 0: muts_dict['Sil'] = round(sil_perc, 3) 
+        
+        return muts_dict
+
+    def add_mis_perc_to_dict(self, aminos_dict, df_codons, muts_dict):
+        # best-case (lim 0): only one different amino generated through a different codon
+        # worst-case (1): all possible aminos being generated, in equal proportions
+        local_mis_dict = {}
+        num_existent_aminos = len(aminos_dict)
+        num_possible_aminos = len(df_codons.Amino.unique())-1 # all except stop codon
+        amino_diversity_perc = num_existent_aminos/num_possible_aminos
+        wc_perc = 1/num_possible_aminos
+        for amino_name, amino_perc in aminos_dict.items():
+            local_mis_dict[amino_name] = amino_diversity_perc*(1/(abs(amino_perc-wc_perc)+1))
+        mis_perc = sum([
+            local_mis_perc*aminos_dict[local_mis_name]
+            for local_mis_name, local_mis_perc in local_mis_dict.items()
+        ])
+        if mis_perc > 0: muts_dict['Mis'] = round(mis_perc, 3)
+
+        return muts_dict
+
+    def add_non_perc_to_dict(self, aminos_dict, muts_dict):
+        # best-case (lim 0): only one stop codon 
+        # worst-case (1): half of codons are stop codons
+        if '-' in aminos_dict:
+            stop_codon_perc = aminos_dict['-']
+            if stop_codon_perc > 0 and stop_codon_perc <= 0.5:
+                non_perc = 2*stop_codon_perc
+            elif stop_codon_perc > 0.5 and stop_codon_perc <= 1:
+                non_perc = -2*stop_codon_perc + 2
+            if non_perc > 0: muts_dict['Non'] = round(non_perc, 3)
+        
         return muts_dict
 
     def get_aminos_from_codons(self, codons_dict, df_aminos):
@@ -127,7 +190,7 @@ class AuxFuncPack:
         aminos_dict = {}
         for codon_name, codon_perc in codons_dict.items():
             codon_amino = df_aminos.loc[df_aminos['Codon'] == codon_name, 'Amino'].iat[0]
-            aminos_dict[codon_amino] = aminos_dict.get(codon_amino, 0) + codon_perc
+            aminos_dict[codon_amino] = aminos_dict.get(codon_amino, 0) + round(codon_perc, 3)
 
         return aminos_dict
 
@@ -143,13 +206,16 @@ class AuxFuncPack:
         # convert into unified dict
         pols_dict = {}
         for key, value in list_percs:
-            pols_dict[key] = round(pols_dict.get(key, 0) + value, 2)
+            pols_dict[key] = round(pols_dict.get(key, 0) + value, 3)
 
         return pols_dict
 
-    def get_mut_score(self, muts_dict, pols_dict, df_codons, df_pols):
+    def get_mut_score(self, muts_dict):
         ### calculate mutation score
-        # (!) still todo
         mut_score = 0
+        for muts_name, muts_perc in muts_dict.items():
+            if muts_name is 'Sil': mut_score += muts_perc*10
+            if muts_name is 'Mis': mut_score += muts_perc*50
+            if muts_name is 'Non': mut_score += muts_perc*100
 
         return mut_score

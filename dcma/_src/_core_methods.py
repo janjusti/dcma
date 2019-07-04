@@ -79,13 +79,14 @@ class CoreMethods:
             if len(unified_list) > 1:
                 # get codons percentages dict
                 codons_dict = auxf_handler.get_codons_perc_dict(root, unified_list)  
-                # get codons mutations dict             
-                muts_dict = auxf_handler.get_mutations_perc_dict(codons_dict, df_codons)
-                # get polarities percentages dict
+                # get aminos from codons
                 aminos_dict = auxf_handler.get_aminos_from_codons(codons_dict, df_codons)
+                # get codons mutations dict             
+                muts_dict = auxf_handler.get_mutations_perc_dict(aminos_dict, codons_dict, df_codons)
+                # get polarities percentages dict
                 pols_dict = auxf_handler.get_polarities_perc_dict(aminos_dict, df_pols)
                 # get mutation score
-                curr_mut_score = auxf_handler.get_mut_score(muts_dict, pols_dict, df_codons, df_pols)
+                curr_mut_score = auxf_handler.get_mut_score(muts_dict)
                 # increment on df_mut_results
                 df_mut_results = df_mut_results.append(
                     {
