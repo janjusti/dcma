@@ -101,7 +101,7 @@ class AuxFuncPack:
                 num_of_deepables = sum([len(set(codon).difference(set(['A', 'C', 'T', 'G', '-']))) != 0 for codon in level])
                 deepables_perc_on_lvl = (num_of_deepables/len(level))
                 deepness_perc = deepness_perc * deepables_perc_on_lvl
-            codons_dict[target_codon] = round(total_perc, 3)
+            codons_dict[target_codon] = total_perc
 
         return codons_dict
 
@@ -143,7 +143,7 @@ class AuxFuncPack:
             local_sil_perc*aminos_dict[local_sil_name]
             for local_sil_name, local_sil_perc in local_sil_dict.items()
         ])
-        if sil_perc > 0: muts_dict['Sil'] = round(sil_perc, 3) 
+        if sil_perc > 0: muts_dict['Sil'] = sil_perc
 
         return muts_dict
 
@@ -162,7 +162,7 @@ class AuxFuncPack:
                 local_mis_perc*aminos_dict[local_mis_name]
                 for local_mis_name, local_mis_perc in local_mis_dict.items()
             ])
-            if mis_perc > 0: muts_dict['Mis'] = round(mis_perc, 3)
+            if mis_perc > 0: muts_dict['Mis'] = mis_perc
 
         return muts_dict
 
@@ -175,7 +175,7 @@ class AuxFuncPack:
                 non_perc = 2*stop_codon_perc
             elif stop_codon_perc > 0.5 and stop_codon_perc <= 1:
                 non_perc = -2*stop_codon_perc + 2
-            if non_perc > 0: muts_dict['Non'] = round(non_perc, 3)
+            if non_perc > 0: muts_dict['Non'] = non_perc
         
         return muts_dict
 
@@ -184,7 +184,7 @@ class AuxFuncPack:
         aminos_dict = {}
         for codon_name, codon_perc in codons_dict.items():
             codon_amino = df_aminos.loc[df_aminos['Codon'] == codon_name, 'Amino'].iat[0]
-            aminos_dict[codon_amino] = aminos_dict.get(codon_amino, 0) + round(codon_perc, 3)
+            aminos_dict[codon_amino] = aminos_dict.get(codon_amino, 0) + codon_perc
         return aminos_dict
 
     def get_polarities_perc_dict(self, aminos_dict, df_pols):
@@ -199,7 +199,7 @@ class AuxFuncPack:
         # convert into unified dict
         pols_dict = {}
         for key, value in list_percs:
-            pols_dict[key] = round(pols_dict.get(key, 0) + value, 3)        
+            pols_dict[key] = pols_dict.get(key, 0) + value        
 
         return pols_dict
 
@@ -218,7 +218,7 @@ class AuxFuncPack:
         else:
             # get minimal value of perc
             min_pols = min(pols_percs, key = lambda t: t[1])[1]
-            pol_score = round(sum_scores*3 + pol_list_size*0.6 + min_pols, 4)
+            pol_score = sum_scores*3 + pol_list_size*0.6 + min_pols
 
         return pol_score
 
@@ -231,6 +231,22 @@ class AuxFuncPack:
             if muts_name is 'Non': mut_score += muts_perc*200
         pol_score_weight = 0.01
         mut_score = (1-pol_score_weight)*mut_score + pol_score_weight*pol_score
-        mut_score = round(mut_score, 3)
 
         return mut_score
+
+    def round_dict_values(self, old_dict, digits, isCompareNeeded):
+        decimal_limit = 10**(-digits)
+        new_dict = {}
+        sum_new_values = 0
+        for curr_key, curr_value in old_dict.items():
+            new_value = round(curr_value, digits)
+            new_dict[curr_key] = new_value
+            sum_new_values += new_value
+        if sum_new_values == 1-decimal_limit and isCompareNeeded:
+            min_key = min(new_dict, key=new_dict.get)
+            new_dict[min_key] = round(new_dict[min_key] + decimal_limit, digits)
+        elif sum_new_values == 1+decimal_limit and isCompareNeeded:
+            max_key = max(new_dict, key=new_dict.get)
+            new_dict[max_key] = round(new_dict[max_key] - decimal_limit, digits)
+            
+        return new_dict

@@ -57,7 +57,6 @@ class CoreMethods:
         # create dfs
         df_mut_results = DataFrame(columns=['ColNum', 'PossibleCodons', 'PossibleMuts', 'PossiblePols', 'MutScore'])
         df_alert_results = DataFrame(columns=['SeqName', 'ColNum', 'AlertType'])
-        #df_aminos = read_csv(PurePath(__file__).parent.parent / 'data' / 'aminos.csv')
         df_codons = read_csv(PurePath(__file__).parent.parent / 'data' / 'codons.csv')
         df_pols = read_csv(PurePath(__file__).parent.parent / 'data' / 'pols.csv')
         # execute deep searcher on each column from .fasta target file
@@ -89,6 +88,10 @@ class CoreMethods:
                 curr_pol_score = auxf_handler.get_pol_score(pols_dict, df_pols)
                 # get mutation score
                 curr_mut_score = auxf_handler.get_mut_score(curr_pol_score, muts_dict)
+                # round dict values
+                codons_dict = auxf_handler.round_dict_values(codons_dict, 5, True)
+                muts_dict = auxf_handler.round_dict_values(muts_dict, 5, False)
+                pols_dict = auxf_handler.round_dict_values(pols_dict, 5, True)
                 # increment on df_mut_results
                 df_mut_results = df_mut_results.append(
                     {
@@ -96,7 +99,7 @@ class CoreMethods:
                         'PossibleCodons': codons_dict,
                         'PossibleMuts': muts_dict,
                         'PossiblePols': pols_dict,
-                        'MutScore': curr_mut_score
+                        'MutScore': round(curr_mut_score, 5)
                     }, ignore_index=True
                 )       
         results_df_list = [df_mut_results, df_alert_results]
