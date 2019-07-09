@@ -45,8 +45,8 @@ class DfExporter():
         # export
         file_path = self.ext_remover(str(folder_path), '.fasta') + '-report.xlsx'
         # best_fit factors
-        StyleFrame.A_FACTOR = 6
-        StyleFrame.P_FACTOR = 1.3
+        StyleFrame.A_FACTOR = 5
+        StyleFrame.P_FACTOR = 1.2
         with StyleFrame.ExcelWriter(file_path) as writer:
             for df_idx in range(0, len(list_sfs)):
                 if not list_dfs[df_idx].empty:
@@ -57,10 +57,29 @@ class DfExporter():
                         best_fit=list(list_dfs[df_idx].columns.values)
                     )
 
+    def rgb2hex(self, r, g, b):
+        if r < 0: r=0
+        if g < 0: g=0
+        if b < 0: b=0
+        if r > 255: r=255
+        if g > 255: g=255
+        if b > 255: b=255
+        return f'{int(round(r)):02x}{int(round(g)):02x}{int(round(b)):02x}'
+
     def apply_highlights_mut_rows(self, sf, df):
         # create masks based on row mutations
-        # (!) still todo
-        pass
+        colour_base = 127
+        for index, row in df.iterrows():
+            muts_dict = row.PossibleMuts
+            rgb = tuple([
+                colour_base+muts_dict['Sil']*(255-colour_base) if 'Sil' in muts_dict else colour_base,
+                colour_base+muts_dict['Mis']*(255-colour_base)*5 if 'Mis' in muts_dict else colour_base,
+                colour_base+muts_dict['Non']*(255-colour_base)*5 if 'Non' in muts_dict else colour_base
+            ])
+            sf.apply_style_by_indexes(
+                indexes_to_style=[index],
+                styler_obj=Styler(bg_color=self.rgb2hex(*rgb))
+            )
         # end
 
     def ext_remover(self, name, ext):

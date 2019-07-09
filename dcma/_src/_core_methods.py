@@ -85,8 +85,10 @@ class CoreMethods:
                 muts_dict = auxf_handler.get_mutations_perc_dict(aminos_dict, codons_dict, df_codons)
                 # get polarities percentages dict
                 pols_dict = auxf_handler.get_polarities_perc_dict(aminos_dict, df_pols)
+                # get polarity score
+                curr_pol_score = auxf_handler.get_pol_score(pols_dict, df_pols)
                 # get mutation score
-                curr_mut_score = auxf_handler.get_mut_score(muts_dict)
+                curr_mut_score = auxf_handler.get_mut_score(curr_pol_score, muts_dict)
                 # increment on df_mut_results
                 df_mut_results = df_mut_results.append(
                     {
