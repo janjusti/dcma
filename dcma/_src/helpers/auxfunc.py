@@ -15,9 +15,10 @@ class AuxFuncPack:
         fasta_list = list(FastaIO.SimpleFastaParser(open(filepath)))
         # converting to list of lists (instead of list of tuples)
         fasta_list = list(map(list, fasta_list))
-        # replace underscores for spaces
+        # replace underscores for spaces and upper all chars
         for fasta_idx in range(0, len(fasta_list)):
-            fasta_list[fasta_idx][0] = fasta_list[fasta_idx][0].replace('_', ' ')                
+            fasta_list[fasta_idx][0] = fasta_list[fasta_idx][0].replace('_', ' ')
+            fasta_list[fasta_idx][1] = fasta_list[fasta_idx][1].upper()
         # check if all sequences have the same size
         sizes_list = []
         for fasta_idx in range(0, len(fasta_list)):

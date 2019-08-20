@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="dcma",
-    version="0.1.0",
+    version="0.1.1",
     description="Deep Codon Mutation Analyser",
     license="MIT",
     author="Jan Justi",
@@ -14,13 +14,13 @@ setup(
     url='https://github.com/janjusti/dppa',
     packages=find_packages(),
     install_requires=[
-        "tqdm==4.31.1",
-        "anytree==2.6.0",
-        "pandas==0.24.2",
-        "numpy==1.16.3",
-        "biopython==1.73",
-        "openpyxl==2.6.2",
-        "styleframe==2.0.3"
+        "tqdm>=4.31.1",
+        "anytree>=2.6.0",
+        "pandas>=0.24.2",
+        "numpy>=1.16.3",
+        "biopython>=1.73",
+        "openpyxl>=2.6.2",
+        "styleframe>=2.0.3"
     ],
     long_description=long_description,
     long_description_content_type='text/markdown',
