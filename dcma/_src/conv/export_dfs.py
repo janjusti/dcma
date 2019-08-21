@@ -10,7 +10,7 @@ class DfExporter():
         [df_mut_results, df_alert_results] = results_df_list
         # sorting by mutscores
         df_mut_results = df_mut_results.sort_values(
-            by=['MutScore'], ascending=False
+            by=['GenScore'], ascending=False
         ).reset_index(drop=True)
         # check if any
         df_muts_size = df_mut_results.shape[0]

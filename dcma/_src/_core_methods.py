@@ -55,7 +55,7 @@ class CoreMethods:
         target_folder = PurePath(target_path).parent
         target_list = auxf_handler.fasta_to_list(target_path)
         # create dfs
-        df_mut_results = DataFrame(columns=['ColNum', 'PossibleCodons', 'PossibleMuts', 'PossiblePols', 'MutScore'])
+        df_mut_results = DataFrame(columns=['ColNum', 'PossibleCodons', 'PossibleMuts', 'PossiblePols', 'GenScore'])
         df_alert_results = DataFrame(columns=['SeqName', 'ColNum', 'AlertType'])
         df_codons = read_csv(PurePath(__file__).parent.parent / 'data' / 'codons.csv')
         df_pols = read_csv(PurePath(__file__).parent.parent / 'data' / 'pols.csv')
@@ -86,8 +86,8 @@ class CoreMethods:
                 pols_dict = auxf_handler.get_polarities_perc_dict(aminos_dict, df_pols)
                 # get polarity score
                 curr_pol_score = auxf_handler.get_pol_score(pols_dict, df_pols)
-                # get mutation score
-                curr_mut_score = auxf_handler.get_mut_score(curr_pol_score, muts_dict)
+                # get general score
+                curr_gen_score = auxf_handler.get_gen_score(curr_pol_score, muts_dict)
                 # round dict values
                 codons_dict = auxf_handler.round_dict_values(codons_dict, 5, True)
                 muts_dict = auxf_handler.round_dict_values(muts_dict, 5, False)
@@ -99,7 +99,7 @@ class CoreMethods:
                         'PossibleCodons': codons_dict,
                         'PossibleMuts': muts_dict,
                         'PossiblePols': pols_dict,
-                        'MutScore': round(curr_mut_score, 5)
+                        'GenScore': round(curr_gen_score, 5)
                     }, ignore_index=True
                 )       
         results_df_list = [df_mut_results, df_alert_results]

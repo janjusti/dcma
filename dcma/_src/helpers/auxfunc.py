@@ -223,17 +223,17 @@ class AuxFuncPack:
 
         return pol_score
 
-    def get_mut_score(self, pol_score, muts_dict):
-        ### calculate mutation score
+    def get_gen_score(self, pol_score, muts_dict):
+        ### calculate general score (based on mutation and polarity)
         mut_score = 0
         for muts_name, muts_perc in muts_dict.items():
             if muts_name is 'Sil': mut_score += muts_perc*0.1
             if muts_name is 'Mis': mut_score += muts_perc*200
             if muts_name is 'Non': mut_score += muts_perc*200
         pol_score_weight = 0.01
-        mut_score = (1-pol_score_weight)*mut_score + pol_score_weight*pol_score
+        gen_score = (1-pol_score_weight)*mut_score + pol_score_weight*pol_score
 
-        return mut_score
+        return gen_score
 
     def round_dict_values(self, old_dict, digits, isCompareNeeded):
         decimal_limit = 10**(-digits)
