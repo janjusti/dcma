@@ -3,6 +3,7 @@ from Bio.Align import AlignInfo
 from Bio.SeqRecord import SeqRecord
 from Bio.Align.Applications import MuscleCommandline
 import dcma.core as solver
+import time
 
 def generate_fasta_from_ids(id_list, fasta_output):
     Entrez.email = 'example@example.com'
@@ -12,6 +13,7 @@ def generate_fasta_from_ids(id_list, fasta_output):
         curr_seq = curr_req.read()
         f.write(curr_seq)
         print(curr_id, 'successfully fetched.')
+        time.sleep(1)
     f.close()    
     print(fasta_output, 'sucessfully created.')
 
