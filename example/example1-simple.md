@@ -47,7 +47,7 @@ Align all sequences with any Multiple Sequence Alignment (MSA) software. In this
 
 ```python
 >>> align_via_muscle('simple-unaligned.fasta', 'simple.fasta')
-Alignment simple-unaligned.fasta -> simple.fasta done.
+Alignment simple-unaligned.fasta > simple.fasta done.
 ```
 
 Finally, analysis results are obtained from dcma's solver.

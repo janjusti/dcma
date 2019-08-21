@@ -22,7 +22,7 @@ def align_via_muscle(input_file, output_file):
         input=input_file, out=output_file
     )
     comm_muscle()
-    print('Alignment', input_file, '->', output_file, 'done.')
+    print('Alignment', input_file, '>', output_file, 'done.')
 
 def get_consensus_seq(fasta_file, q_id):
     align = AlignIO.read(fasta_file, 'fasta')

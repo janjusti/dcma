@@ -20,7 +20,7 @@ def align_via_muscle(input_file, output_file):
         input=input_file, out=output_file
     )
     comm_muscle()
-    print('Alignment', input_file, '->', output_file, 'done.')
+    print('Alignment', input_file, '>', output_file, 'done.')
 
 def main_simple():
     id_list = ['KC662553.1', 'KC662552.1', 'KM058604.1', 'KM058603.1']
