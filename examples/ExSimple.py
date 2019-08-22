@@ -29,4 +29,4 @@ def main_simple():
     align_via_muscle('simple-unaligned.fasta', 'simple.fasta')
 
     results = solver.run('simple.fasta')
-    solver.export(results, 'xls', 'simple')
+    solver.export(results, 'csv', 'simple')

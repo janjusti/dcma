@@ -31,7 +31,7 @@ def get_consensus_seq(fasta_file, q_id):
         id=q_id,
         description=''
     )
-    print("'" + q_id + "' consensus sequence generated (from " + fasta_file + ')')
+    print("'" + q_id + "' consensus sequence generated (original: " + fasta_file + ')')
     return seq
 
 def write_fasta(fasta_file, seq_list):
@@ -39,9 +39,11 @@ def write_fasta(fasta_file, seq_list):
         SeqIO.write(seq_list, handle, 'fasta')
     print(fasta_file, 'successfully written.')
 
-def main_groups():
-    generate_fasta_from_ids(['KC662553.1', 'KC662552.1'], 'groupA-unaligned.fasta')
-    generate_fasta_from_ids(['KM058604.1', 'KM058603.1'], 'groupB-unaligned.fasta')
+def main_group():
+    groupA_ids = ['KC662553.1', 'KC662552.1']
+    groupB_ids = ['KM058604.1', 'KM058603.1']
+    generate_fasta_from_ids(groupA_ids, 'groupA-unaligned.fasta')
+    generate_fasta_from_ids(groupB_ids, 'groupB-unaligned.fasta')
 
     align_via_muscle('groupA-unaligned.fasta', 'groupA.fasta')
     align_via_muscle('groupB-unaligned.fasta', 'groupB.fasta')
@@ -53,4 +55,4 @@ def main_groups():
     align_via_muscle('groupAB-cons.fasta', 'groups-target.fasta')
 
     results = solver.run('groups-target.fasta', searchable_keyphrase='any sentence')
-    solver.export(results, 'xls', 'groups')
+    solver.export(results, 'csv', 'groups')
