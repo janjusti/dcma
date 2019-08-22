@@ -57,6 +57,6 @@ solver.export(results, report_type, report_name, report_path)
 
 ## Examples
 
-[Simple Execution](example/example1-simple.md)
+[Simple Execution](examples/example1-simple.md)
 
-[Group Execution](example/example2-group.md)
+[Group Execution](examples/example2-group.md)
