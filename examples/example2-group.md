@@ -6,11 +6,11 @@ Open terminal and create a new folder.
 mkdir dcma-examples
 ```
 
-Get inside `dcma-examples` and download `ExGroups` module.
+Get inside `dcma-examples` and download `ExGroup` module.
 
 ```bash
 cd dcma-examples
-wget https://github.com/janjusti/dcma/raw/master/example/ExGroups.py
+wget https://github.com/janjusti/dcma/raw/master/example/ExGroup.py
 ```
 
 Open Python3 from terminal.
@@ -23,10 +23,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> 
 ```
 
-Import all functions from `ExGroups` module.
+Import all functions from `ExGroup` module.
 
 ```python
->>> from ExGroups import *
+>>> from ExGroup import *
 ```
 
 This example will use four different genes of HPV 16 (E6), extracted from [GenBank](https://www.ncbi.nlm.nih.gov/genbank/) and identified arbitrarily as Group A ([KC662553.1](https://www.ncbi.nlm.nih.gov/nuccore/KC662553.1) and [KC662552.1](https://www.ncbi.nlm.nih.gov/nuccore/KC662552.1)) and Group B ([KM058604.1](https://www.ncbi.nlm.nih.gov/nuccore/KM058604.1) and [KM058603.1](https://www.ncbi.nlm.nih.gov/nuccore/KM058603.1)).
@@ -73,7 +73,7 @@ Align all consensus sequences from previous step.
 Alignment groupAB-cons.fasta > groups-target.fasta done.
 ```
 
-In this example, "any sentence" is being used as *searchable keyphrase*. If there is any unrecognised codon (containing any symbol other than A/C/T/G) in any consensus sequence, DCMA will search for matching codons in original files. 
+In this example, "any sentence" is being used as *searchable keyphrase*. If there is any unrecognised codon (containing any symbol [not recognised by IUPAC](https://www.bioinformatics.org/sms2/iupac.html)) in any consensus sequence, DCMA will search for matching codons in original files. 
 
 *e.g.*: an unrecognised codon (XAT, position 94-95-96) is found in `groupB_any_sentence` sequence. DCMA will look into `groupB.fasta` to check which codons XAT could be. 
 
