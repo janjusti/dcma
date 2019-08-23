@@ -20,7 +20,7 @@ usage: run-dcma [-h] [--reportName REPORTNAME] [--reportPath REPORTPATH]
                 [--searchKP SEARCHKP] [--debug]
                 TARGET REPORTTYPE
 
-Analyse all protein alignment .fasta files from a target.
+Analyse mutation on all nucleotide alignment .fasta files from a target.
 
 positional arguments:
   TARGET                Target .fasta file to be analysed.

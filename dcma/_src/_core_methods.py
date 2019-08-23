@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 class CoreMethods:
     def start_main(self):
         # get options from user
-        parser = argparse.ArgumentParser(description='Analyse all nucleotide alignment .fasta files from a target.')
+        parser = argparse.ArgumentParser(description='Analyse mutation on all nucleotide alignment .fasta files from a target.')
         parser.add_argument(
             'target', help='Target .fasta file to be analysed.', type=str,
             metavar='TARGET'
