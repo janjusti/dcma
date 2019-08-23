@@ -6,12 +6,12 @@ with open("README.md", "r") as fh:
 
 setup(
     name="dcma",
-    version="0.1.1",
+    version="0.1.2",
     description="Deep Codon Mutation Analyser",
     license="MIT",
     author="Jan Justi",
     author_email='jan.ma.justi@gmail.com',
-    url='https://github.com/janjusti/dppa',
+    url='https://github.com/janjusti/dcma',
     packages=find_packages(),
     install_requires=[
         "tqdm>=4.31.1",
