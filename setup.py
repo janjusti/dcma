@@ -17,7 +17,6 @@ setup(
         "tqdm>=4.31.1",
         "anytree>=2.6.0",
         "pandas>=0.24.2",
-        "numpy>=1.16.3",
         "biopython>=1.73",
         "openpyxl>=2.6.2",
         "styleframe>=2.0.3"
