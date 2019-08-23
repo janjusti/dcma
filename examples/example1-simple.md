@@ -10,7 +10,7 @@ Get inside `dcma-examples` and download `ExSimple` module.
 
 ```bash
 cd dcma-examples
-wget https://github.com/janjusti/dcma/raw/master/example/ExSimple.py
+wget https://github.com/janjusti/dcma/raw/master/examples/ExSimple.py
 ```
 
 Open Python3 from terminal.
@@ -50,7 +50,7 @@ Align all sequences with any Multiple Sequence Alignment (MSA) software. In this
 Alignment simple-unaligned.fasta > simple.fasta done.
 ```
 
-Finally, analysis results are obtained from dcma's solver.
+Finally, analysis results are obtained from DCMA's solver.
 
 ```python
 >>> results = solver.run('simple.fasta')

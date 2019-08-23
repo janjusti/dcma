@@ -10,7 +10,7 @@ Get inside `dcma-examples` and download `ExGroup` module.
 
 ```bash
 cd dcma-examples
-wget https://github.com/janjusti/dcma/raw/master/example/ExGroup.py
+wget https://github.com/janjusti/dcma/raw/master/examples/ExGroup.py
 ```
 
 Open Python3 from terminal.
@@ -73,13 +73,13 @@ Align all consensus sequences from previous step.
 Alignment groupAB-cons.fasta > groups-target.fasta done.
 ```
 
-In this example, "any sentence" is being used as *searchable keyphrase*. If there is any unrecognised codon (containing any non-generic symbol [not recognised by IUPAC](https://www.bioinformatics.org/sms2/iupac.html)) in any consensus sequence, DCMA will search for matching codons in original files. 
+In this example, "any sentence" is being used as *searchable keyphrase*. If there is any unrecognised codon (containing any non-specific symbol, including those [recognised by IUPAC](https://www.bioinformatics.org/sms2/iupac.html)) in any consensus sequence, DCMA will search for matching codons in original files. 
 
-*e.g.*: an unrecognised codon (XAT, position 94-95-96) is found in `groupB_any_sentence` sequence. DCMA will look into `groupB.fasta` to check which codons XAT could be. 
+**e.g.**: an unrecognised codon (XAT, position 94-95-96) is found in `groupB_any_sentence` sequence. DCMA will look into `groupB.fasta` to check which codons XAT could be. 
 
 This feature works for any amount of levels, as long as the sequence's name containing an unrecognised codon has a searchable keyphrase settled. If there is not any other searchable sequence to check, this unrecognised codon will be considered as "pure" in `alerts`.
 
-Finally, analysis results are obtained from dcma's solver.
+Finally, analysis results are obtained from DCMA's solver.
 
 ```python
 >>> results = solver.run('groups-target.fasta', searchable_keyphrase='any sentence')

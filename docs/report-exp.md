@@ -4,29 +4,29 @@ First position of mutated codon, starting from 1. For example, `ColNum` 16 would
 
 #### `PossibleCodons`
 
-Percentage values dictionary showing the proportion of each codon on `ColNum`. Only recognized codons are listed in `PossibleCodons`; gaps and unidentified codons are also considered, but not shown (see `alerts` instead).
+Percentage values dictionary showing the proportion of each codon on `ColNum`. Only recognized codons are listed in `PossibleCodons`; gaps and unidentified codons are also considered into proportion, but not shown (see `alerts` instead).
 
 #### `PossibleMuts`
 
-Percentage values dictionary showing mutation scores for each mutation type.
+Percentage values dictionary showing mutation scores for each mutation type, analysing specifically all codons from `PossibleCodons`.
 
 * `Sil` (Silent)
 
-Best-case scenario (close to 0): only one different codon between all codons, generating the same amino acid.
+  * Best-case scenario (close to 0): only one different codon between all codons, generating the same amino acid.
 
-Worst-case scenario (1): all possible codons for the same amino, in equal proportions.
+  * Worst-case scenario (1): all possible codons for the same amino, in equal proportions.
 
 * `Mis` (Missense)
 
-Best-case scenario (close to 0): only one different amino acid being generated through a single different codon, between all codons.
+  * Best-case scenario (close to 0): only one different amino acid being generated through a single different codon, between all codons.
 
-Worst-case scenario (1): all possible amino acids being generated, in equal proportions.
+  * Worst-case scenario (1): all possible amino acids being generated, in equal proportions.
 
 * `Non` (Nonsense)
 
-Best-case scenario (close to 0): only one stop codon between all codons.
+  * Best-case scenario (close to 0): only one stop codon between all codons.
 
-Worst-case scenario (1): half of codons are stop codons.
+  * Worst-case scenario (1): half of codons are stop codons.
 
 #### `PossiblePols`
 
@@ -49,7 +49,7 @@ GenScore = 0.99*MutScore + 0.01*PolScore
 
 * `MutScore`
 
-Mutation score is calculated based on each percentage from mutation type occurrence (`PossibleMuts`).
+Mutation score is calculated depending on each percentage from mutation type occurrence (`PossibleMuts`), weighed based on each mutation type relevance.
 
 ```math
 MutScore = SilPerc*0.1 + MisPerc*200 + NonPerc*200
