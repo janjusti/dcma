@@ -30,7 +30,7 @@ Percentage values dictionary showing mutation scores for each mutation type, ana
 
 #### `PossiblePols`
 
-Percentage values dictionary showing the proportion of polarity from each amino acid generated from all codons listed on `PossibleCodons`. Score values are used to calculate `PolScore`.
+Percentage values dictionary showing the proportion of polarity from all amino acid generated from all codons listed on `PossibleCodons`. Score values are used to calculate `PolScore`.
 
 | Type | Name               | Score |
 |------|--------------------|-------|

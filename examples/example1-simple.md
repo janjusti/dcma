@@ -46,20 +46,20 @@ simple-unaligned.fasta sucessfully created.
 Align all sequences with any Multiple Sequence Alignment (MSA) software. In this case, [MUSCLE](https://www.drive5.com/muscle/) is used.
 
 ```python
->>> align_via_muscle('simple-unaligned.fasta', 'simple.fasta')
-Alignment simple-unaligned.fasta > simple.fasta done.
+>>> align_via_muscle('simple-unaligned.fasta', 'simple-target.fasta')
+Alignment simple-unaligned.fasta > simple-target.fasta done.
 ```
 
 Finally, analysis results are obtained from DCMA's solver.
 
 ```python
->>> results = solver.run('simple.fasta')
->>> solver.export(results, 'csv', 'simple')
+>>> results = solver.run('simple-target.fasta')
+>>> solver.export(results, 'csv', 'simpleResult')
 ```
 
 ## Output ([More details](../docs/report-exp.md))
 
-### `simple-muts.csv`
+### `simpleResult-muts.csv`
 
 | ColNum | PossibleCodons               | PossibleMuts     | PossiblePols               | GenScore |
 |--------|------------------------------|------------------|----------------------------|----------|
@@ -67,7 +67,7 @@ Finally, analysis results are obtained from DCMA's solver.
 | 268    | "{'GTG': 0.25, 'TTG': 0.75}" | {'Mis': 0.06176} | {'Np': 1.0}                | 12.22848 |
 | 16     | "{'ACG': 0.25, 'ACT': 0.25}" | {'Sil': 0.16667} | {'Nc': 0.5}                | 0.0165   |
 
-### `simple-alerts.csv`
+### `simpleResult-alerts.csv`
 
 All gaps and unidentified codons are listed in this file.
 

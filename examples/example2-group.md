@@ -75,7 +75,7 @@ Alignment groupAB-cons.fasta > groups-target.fasta done.
 
 In this example, "any sentence" is being used as *searchable keyphrase*. If there is any unrecognised codon (containing any non-specific symbol, including those [recognised by IUPAC](https://www.bioinformatics.org/sms2/iupac.html)) in any consensus sequence, DCMA will search for matching codons in original files. 
 
-**e.g.**: an unrecognised codon (XAT, position 94-95-96) is found in `groupB_any_sentence` sequence. DCMA will look into `groupB.fasta` to check which codons XAT could be. 
+**e.g.**: an unrecognised codon (XAT, position 94-95-96) is found in `groupB_any_sentence` sequence from `groups-target.fasta`. In this specific case, DCMA will look into `groupB.fasta`, which is `groupB_any_sentence` original reference by removing "any sentence" from sequence name, to check which codons XAT could be.
 
 This feature works for any amount of levels, as long as the sequence's name containing an unrecognised codon has a searchable keyphrase settled. If there is not any other searchable sequence to check, this unrecognised codon will be considered as "pure" in `alerts`.
 
@@ -83,12 +83,12 @@ Finally, analysis results are obtained from DCMA's solver.
 
 ```python
 >>> results = solver.run('groups-target.fasta', searchable_keyphrase='any sentence')
->>> solver.export(results, 'csv', 'groups')
+>>> solver.export(results, 'csv', 'groupsResult')
 ```
 
 ## Output ([More details](../docs/report-exp.md))
 
-### `groups-muts.csv`
+### `groupsResult-muts.csv`
 
 | ColNum | PossibleCodons               | PossibleMuts     | PossiblePols               | GenScore |
 |--------|------------------------------|------------------|----------------------------|----------|
@@ -96,7 +96,7 @@ Finally, analysis results are obtained from DCMA's solver.
 | 268    | "{'GTG': 0.25, 'TTG': 0.75}" | {'Mis': 0.06176} | {'Np': 1.0}                | 12.22848 |
 | 16     | "{'ACG': 0.25, 'ACT': 0.25}" | {'Sil': 0.16667} | {'Nc': 0.5}                | 0.0165   |
 
-### `groups-alerts.csv`
+### `groupsResult-alerts.csv`
 
 All gaps and unidentified codons are listed in this file.
 
